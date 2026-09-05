@@ -15,9 +15,9 @@ app.post('/v1/seller/listing-beautifier', async (req: Request<{}, BeautifySeller
   const beautifiedDetails = await endpoints.beautifySellerDetails(sellerDetails.sellerDetails);
 
   const response: BeautifySellerDetailsResponse = {
-    title: `Beautified: ${beautifiedDetails}`,
-    tags: ['tag1', 'tag2'],
-    priceRange: [10.0, 50.0],
+    title: beautifiedDetails.title,
+    tags: beautifiedDetails.tags,
+    priceRange: beautifiedDetails.priceRange,
   };
 
   res.json(response);
