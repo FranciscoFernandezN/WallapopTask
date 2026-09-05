@@ -1,0 +1,5 @@
+{
+  "errors": {
+    "deprecation": "Esta aplicación debe actualizarse o dejará de funcionar el {deprecation_date}"
+  }
+}

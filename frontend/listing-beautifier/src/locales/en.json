@@ -1,0 +1,5 @@
+{
+  "errors": {
+    "deprecation": "This app should be updated or it will stop working by {deprecation_date}"
+  }
+}
