@@ -1,9 +1,9 @@
 import { describe, expect, test, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { BeautifyScreen } from './screens/beautifyscreen/BeautifyScreen';
-import { Header } from './components/header/Header';
-import * as api from './utils/api';
+import { BeautifyScreen } from '../src/screens/beautifyscreen/BeautifyScreen';
+import { Header } from '../src/components/header/Header';
+import * as api from '../src/utils/api';
 
 vi.mock('./utils/api');
 
