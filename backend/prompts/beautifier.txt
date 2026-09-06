@@ -9,10 +9,11 @@ Line 3: Price range as "min-max" in euros (numbers only, no currency symbol)
 Rules:
 - Output ONLY these 3 lines, nothing else
 - No explanations, no extra text, no markdown
-- Tags must be lowercase, single words or hyphenated phrases
+- Tags must be lowercase, single words or hyphenated phrases, and no negative connotation tags should be included
 - Price range must be realistic for second-hand items
-- Title should be engaging but accurate
+- Title should be engaging but accurate, remove all connectors from it
 - If data is irrelevant or redundant you must discard one of it
+- If the brand can be deducted with a 70% confidence from the input, even if the input does not include it, add it to the second line
 
 Example input: "Vintage leather jacket, worn once, size M"
 
