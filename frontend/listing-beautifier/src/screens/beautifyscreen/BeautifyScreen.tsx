@@ -9,6 +9,30 @@ export function BeautifyScreen() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BeautifySellerDetailsResponse | null>(null);
 
+  const getMissingInfoHints = (text: string): string[] => {
+    const hints: string[] = [];
+    const trimmed = text.trim();
+
+    if (trimmed.length === 0) return hints;
+
+    const hasCurrency = /[€$£¥₹]|eur|usd|gbp|dollars?|euros?|pounds?|yens?/i.test(trimmed);
+    const hasNumber = /\d/.test(trimmed);
+    if (!hasCurrency && !hasNumber) {
+      hints.push('Tell us how much did it cost or how much you want for it');
+    }
+
+    if (trimmed.length < 20) {
+      hints.push('Try to explain a bit more about the product (does it have any special features, is it new or used, etc.)');
+    }
+
+    const commaCount = (trimmed.match(/,/g) || []).length;
+    if (commaCount < 2) {
+      hints.push('You can add details separated by commas (e.g. condition, size, brand)');
+    }
+
+    return hints;
+  };
+
   const handleSubmit = async () => {
     if (!sellerDetails.trim()) return;
 
@@ -39,13 +63,25 @@ export function BeautifyScreen() {
             disabled={loading}
             className="input-field"
           />
-          <button 
-            onClick={handleSubmit} 
-            disabled={loading || !sellerDetails.trim()}
-            className="submit-button"
-          >
-            {loading ? 'Processing...' : 'Beautify'}
-          </button>
+          <div className="button-wrapper">
+            <button 
+              onClick={handleSubmit} 
+              disabled={loading || !sellerDetails.trim()}
+              className="submit-button"
+            >
+              {loading ? 'Processing...' : 'Beautify'}
+            </button>
+            {!loading && sellerDetails.trim() && getMissingInfoHints(sellerDetails).length > 0 && (
+              <div className="tooltip">
+                <span className="tooltip-text">We suggest you include this before submitting:</span>
+                <ul>
+                  {getMissingInfoHints(sellerDetails).map((hint, i) => (
+                    <li key={i}>{hint}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
         {result && (
