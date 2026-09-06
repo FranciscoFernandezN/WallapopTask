@@ -19,7 +19,7 @@ export function BeautifyScreen() {
 
     const hasCurrency = /[€$£¥₹]|eur|usd|gbp|dollars?|euros?|pounds?|yens?/i.test(trimmed);
     const hasNumber = /\d/.test(trimmed);
-    if (!hasCurrency && !hasNumber) {
+    if (!hasCurrency || !hasNumber) {
       hints.push(t('beautify.hints.missingPrice'));
     }
 
