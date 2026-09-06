@@ -1,36 +1,26 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Blocks, Comment, Radio } from 'react-loader-spinner';
 import './LoadingOverlay.css';
 
-const SPINNERS = [
-  {
-    component: Blocks,
-    text: 'Downloading the best ideas from the cloud',
-  },
-  {
-    component: Comment,
-    text: 'Asking a very complex robot',
-  },
-  {
-    component: Radio,
-    text: 'Tuning the channel to the best ideas\' frequency',
-  },
-];
+const SPINNER_KEYS = ['loading.spinner1', 'loading.spinner2', 'loading.spinner3'];
+const SPINNER_COMPONENTS = [Blocks, Comment, Radio];
 
 export function LoadingOverlay() {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(() => Math.floor(Math.random() * 3));
 
   useEffect(() => {
     
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % SPINNERS.length);
+      setCurrentIndex((prev) => (prev + 1) % SPINNER_COMPONENTS.length);
     }, 2000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const CurrentSpinner = SPINNERS[currentIndex].component;
-  const currentText = SPINNERS[currentIndex].text;
+  const CurrentSpinner = SPINNER_COMPONENTS[currentIndex];
+  const currentText = t(SPINNER_KEYS[currentIndex]);
 
   return (
     <div className="loading-overlay">

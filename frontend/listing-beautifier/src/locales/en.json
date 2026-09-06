@@ -1,5 +1,34 @@
 {
   "errors": {
     "deprecation": "This app should be updated or it will stop working by {deprecation_date}"
+  },
+  "header": {
+    "logoAlt": "Wallapop Logo",
+    "title": "Wallapop Task - Francisco Fernández Noguerol"
+  },
+  "beautify": {
+    "title": "Listing Beautifier",
+    "placeholder": "Enter product description...",
+    "button": {
+      "default": "Beautify",
+      "loading": "Processing..."
+    },
+    "result": {
+      "title": "Result",
+      "titleLabel": "Title",
+      "tagsLabel": "Tags",
+      "priceRangeLabel": "Price Range"
+    },
+    "hints": {
+      "suggestion": "We suggest you include this before submitting:",
+      "missingPrice": "Add a price (currency symbol or amount)",
+      "tooShort": "Add more details to your description",
+      "notEnoughDetails": "Add more details (e.g. condition, size, brand)"
+    }
+  },
+  "loading": {
+    "spinner1": "Downloading the best ideas from the cloud",
+    "spinner2": "Asking a very complex robot",
+    "spinner3": "Tuning the channel to the best ideas' frequency"
   }
 }

@@ -1,5 +1,34 @@
 {
   "errors": {
     "deprecation": "Esta aplicación debe actualizarse o dejará de funcionar el {deprecation_date}"
+  },
+  "header": {
+    "logoAlt": "Logo de Wallapop",
+    "title": "Tarea Wallapop - Francisco Fernández Noguerol"
+  },
+  "beautify": {
+    "title": "Embellecedor de Anuncios",
+    "placeholder": "Introduce la descripción del producto...",
+    "button": {
+      "default": "Embellecer",
+      "loading": "Procesando..."
+    },
+    "result": {
+      "title": "Resultado",
+      "titleLabel": "Título",
+      "tagsLabel": "Etiquetas",
+      "priceRangeLabel": "Rango de Precio"
+    },
+    "hints": {
+      "suggestion": "Te sugerimos incluir esto antes de enviar:",
+      "missingPrice": "Añade un precio (símbolo de moneda o cantidad)",
+      "tooShort": "Añade más detalles a tu descripción",
+      "notEnoughDetails": "Añade más detalles (ej. condición, tamaño, marca)"
+    }
+  },
+  "loading": {
+    "spinner1": "Descargando las mejores ideas de la nube",
+    "spinner2": "Preguntando a un robot muy complejo",
+    "spinner3": "Sintonizando el canal a la frecuencia de las mejores ideas"
   }
 }

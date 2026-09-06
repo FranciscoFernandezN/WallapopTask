@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { sendBeautifySellerDetails } from '../../utils/api.ts';
 import type { BeautifySellerDetailsResponse } from '../../../../../shared/types/beautify.ts';
 import { LoadingOverlay } from '../../components/loadingoverlay/LoadingOverlay.tsx';
 import './BeautifyScreen.css';
 
 export function BeautifyScreen() {
+  const { t } = useTranslation();
   const [sellerDetails, setSellerDetails] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BeautifySellerDetailsResponse | null>(null);
@@ -18,16 +20,16 @@ export function BeautifyScreen() {
     const hasCurrency = /[€$£¥₹]|eur|usd|gbp|dollars?|euros?|pounds?|yens?/i.test(trimmed);
     const hasNumber = /\d/.test(trimmed);
     if (!hasCurrency && !hasNumber) {
-      hints.push('Tell us how much did it cost or how much you want for it');
+      hints.push(t('beautify.hints.missingPrice'));
     }
 
     if (trimmed.length < 20) {
-      hints.push('Try to explain a bit more about the product (does it have any special features, is it new or used, etc.)');
+      hints.push(t('beautify.hints.tooShort'));
     }
 
     const commaCount = (trimmed.match(/,/g) || []).length;
     if (commaCount < 2) {
-      hints.push('You can add details separated by commas (e.g. condition, size, brand)');
+      hints.push(t('beautify.hints.notEnoughDetails'));
     }
 
     return hints;
@@ -51,7 +53,7 @@ export function BeautifyScreen() {
     <div className="beautify-screen">
       {loading && <LoadingOverlay />}
       <div className="container">
-        <h1 className="title">Listing Beautifier</h1>
+        <h1 className="title">{t('beautify.title')}</h1>
         
         <div className="input-section">
           <input
@@ -59,7 +61,7 @@ export function BeautifyScreen() {
             value={sellerDetails}
             onChange={(e) => setSellerDetails(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-            placeholder="Enter product description..."
+            placeholder={t('beautify.placeholder')}
             disabled={loading}
             className="input-field"
           />
@@ -69,11 +71,11 @@ export function BeautifyScreen() {
               disabled={loading || !sellerDetails.trim()}
               className="submit-button"
             >
-              {loading ? 'Processing...' : 'Beautify'}
+              {loading ? t('beautify.button.loading') : t('beautify.button.default')}
             </button>
             {!loading && sellerDetails.trim() && getMissingInfoHints(sellerDetails).length > 0 && (
               <div className="tooltip">
-                <span className="tooltip-text">We suggest you include this before submitting:</span>
+                <span className="tooltip-text">{t('beautify.hints.suggestion')}</span>
                 <ul>
                   {getMissingInfoHints(sellerDetails).map((hint, i) => (
                     <li key={i}>{hint}</li>
@@ -86,16 +88,16 @@ export function BeautifyScreen() {
 
         {result && (
           <div className="result-section">
-            <h2 className="result-title">Result</h2>
+            <h2 className="result-title">{t('beautify.result.title')}</h2>
             
             <div className="result-card">
               <div className="result-item">
-                <span className="result-label">Title</span>
+                <span className="result-label">{t('beautify.result.titleLabel')}</span>
                 <p className="result-value title-value">{result.title}</p>
               </div>
 
               <div className="result-item">
-                <span className="result-label">Tags</span>
+                <span className="result-label">{t('beautify.result.tagsLabel')}</span>
                 <div className="tags-container">
                   {result.tags.map((tag, index) => (
                     <span key={index} className="tag">
@@ -106,7 +108,7 @@ export function BeautifyScreen() {
               </div>
 
               <div className="result-item">
-                <span className="result-label">Price Range</span>
+                <span className="result-label">{t('beautify.result.priceRangeLabel')}</span>
                 <p className="result-value price-value">
                   {result.priceRange[0]}€ - {result.priceRange[1]}€
                 </p>
