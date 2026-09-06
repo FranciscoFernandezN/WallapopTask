@@ -22,7 +22,7 @@
     "hints": {
       "suggestion": "We suggest you include this before submitting:",
       "missingPrice": "Add a price (currency symbol or amount)",
-      "tooShort": "Add more details to your description",
+      "tooShort": "Add some exclusive functionality and why it is useful",
       "notEnoughDetails": "Add more details (e.g. condition, size, brand)"
     }
   },

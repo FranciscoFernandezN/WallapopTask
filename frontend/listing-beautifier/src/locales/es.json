@@ -22,7 +22,7 @@
     "hints": {
       "suggestion": "Te sugerimos incluir esto antes de enviar:",
       "missingPrice": "Añade un precio (símbolo de moneda o cantidad)",
-      "tooShort": "Añade más detalles a tu descripción",
+      "tooShort": "Añade alguna funcionalidad exclusiva y por qué es útil",
       "notEnoughDetails": "Añade más detalles (ej. condición, tamaño, marca)"
     }
   },
