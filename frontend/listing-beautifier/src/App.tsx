@@ -1,11 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
-import { BeautifyScreen } from './screens/BeautifyScreen.tsx';
+import { BeautifyScreen } from './screens/beautifyscreen/BeautifyScreen.tsx';
+import { Header } from './components/header/Header.tsx';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<BeautifyScreen />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<BeautifyScreen />} />
+      </Routes>
+    </>
   );
 }
 

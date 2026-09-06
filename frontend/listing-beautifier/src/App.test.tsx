@@ -1,11 +1,27 @@
 import { describe, expect, test, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { BeautifyScreen } from './screens/BeautifyScreen';
+import { BeautifyScreen } from './screens/beautifyscreen/BeautifyScreen';
+import { Header } from './components/header/Header';
 import * as api from './utils/api';
-import type { BeautifySellerDetailsResponse } from '../../../shared/types/beautify';
 
 vi.mock('./utils/api');
+
+describe('Header', () => {
+  test('renders Wallapop logo and task text', () => {
+    render(
+      <BrowserRouter>
+        <Header />
+      </BrowserRouter>
+    );
+    
+    const logo = screen.getByAltText(/wallapop logo/i);
+    const text = screen.getByText(/wallapop task - francisco fernández noguerol/i);
+    
+    expect(logo).toBeInTheDocument();
+    expect(text).toBeInTheDocument();
+  });
+});
 
 describe('BeautifyScreen', () => {
   const renderComponent = () => {
@@ -16,7 +32,7 @@ describe('BeautifyScreen', () => {
     );
   };
 
-  test('Renders text input and button', () => {
+  test('renders text input and button', () => {
     renderComponent();
     
     const input = screen.getByRole('textbox');
@@ -26,7 +42,7 @@ describe('BeautifyScreen', () => {
     expect(button).toBeInTheDocument();
   });
 
-  test('Button is disabled when input is empty', () => {
+  test('button is disabled when input is empty', () => {
     renderComponent();
     
     const button = screen.getByRole('button');
@@ -34,7 +50,7 @@ describe('BeautifyScreen', () => {
     expect(button).toBeDisabled();
   });
 
-  test('Button is enabled when input has text', () => {
+  test('button is enabled when input has text', () => {
     renderComponent();
     
     const input = screen.getByRole('textbox');
@@ -45,7 +61,7 @@ describe('BeautifyScreen', () => {
     expect(button).toBeEnabled();
   });
 
-  test('Button becomes disabled again when input is cleared', () => {
+  test('button becomes disabled again when input is cleared', () => {
     renderComponent();
     
     const input = screen.getByRole('textbox');
@@ -58,12 +74,12 @@ describe('BeautifyScreen', () => {
     expect(button).toBeDisabled();
   });
 
-  test('Displays beautified result after successful submission', async () => {
+  test('displays beautified result after successful submission', async () => {
     const mockResponse = {
       title: 'Vintage Leather Jacket Size M',
       tags: ['vintage', 'leather-jacket', 'size-m'],
-      priceRange: [25, 45]
-    } as BeautifySellerDetailsResponse;
+      priceRange: [25, 45] as [number, number]
+    };
 
     vi.mocked(api.sendBeautifySellerDetails).mockResolvedValue(mockResponse);
 
@@ -79,7 +95,9 @@ describe('BeautifyScreen', () => {
       expect(screen.getByText(/Vintage Leather Jacket Size M/i)).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/vintage, leather-jacket, size-m/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/vintage/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/leather-jacket/i)).toBeInTheDocument();
+    expect(screen.getByText(/size-m/i)).toBeInTheDocument();
     expect(screen.getByText(/€25 - €45/i)).toBeInTheDocument();
   });
 });
