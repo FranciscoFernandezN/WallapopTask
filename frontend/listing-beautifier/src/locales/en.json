@@ -21,9 +21,9 @@
     },
     "hints": {
       "suggestion": "We suggest you include this before submitting:",
-      "missingPrice": "Add a price (currency symbol or amount)",
+      "missingPrice": "Add how much it cost you or how much you estimate it is worth",
       "tooShort": "Add some exclusive functionality and why it is useful",
-      "notEnoughDetails": "Add more details (e.g. condition, size, brand)"
+      "notEnoughDetails": "Separate the details with commas (e.g. condition, size, brand)"
     }
   },
   "loading": {

@@ -21,9 +21,9 @@
     },
     "hints": {
       "suggestion": "Te sugerimos incluir esto antes de enviar:",
-      "missingPrice": "Añade un precio (símbolo de moneda o cantidad)",
+      "missingPrice": "Añade cuánto te costó o cuánto estimas que vale",
       "tooShort": "Añade alguna funcionalidad exclusiva y por qué es útil",
-      "notEnoughDetails": "Añade más detalles (ej. condición, tamaño, marca)"
+      "notEnoughDetails": "Separa los detalles por comas (ej. condición, tamaño, marca)"
     }
   },
   "loading": {
