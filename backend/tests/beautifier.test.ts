@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
-import {beautifySellerDetails} from '../src/utils/api.ts';
+import {beautifySellerDetails} from '../src/services/beautifier.service.ts';
 
 async function assertBeautified(
   input: string,

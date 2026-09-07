@@ -1,4 +1,4 @@
-import { env, loadPromptText } from './env.ts';
+import { env, loadPromptText } from '../utils/env.ts';
 import { OpenRouter } from '@openrouter/sdk';
 
 const openrouter = new OpenRouter({
@@ -61,4 +61,3 @@ export async function beautifySellerDetails(sellerDetails: string): Promise<Pars
     const responseText = completion.choices[0].message.content?.toString() || '';
     return parseListingResponse(responseText);
 }
-
