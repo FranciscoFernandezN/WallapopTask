@@ -55,25 +55,32 @@ export function titleContainsMinWords(title: string, originalDetails: string, mi
     return matchCount >= minWords;
 }
 
-async function askAIModel(sellerDetails: string): Promise<ParsedListing> {
-    const completion = await openrouter.chat.send({
-        chatRequest: {
-            model: env.aiModelProvider,
-            messages: [
-                {
-                    role: 'system',
-                    content: loadPromptText(),
-                },
-                {
-                    role: 'user',
-                    content: sellerDetails,
-                },
-            ],
-        },
+async function askAIModel(model: string, sellerDetails: string): Promise<ParsedListing> {
+    const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error(`AI model timeout after ${env.aiModelTimeout}ms`)), env.aiModelTimeout);
     });
+    
+    const completion = await Promise.race([
+        openrouter.chat.send({
+            chatRequest: {
+                model: model,
+                messages: [
+                    {
+                        role: 'system',
+                        content: loadPromptText(),
+                    },
+                    {
+                        role: 'user',
+                        content: sellerDetails,
+                    },
+                ],
+            },
+        }),
+        timeoutPromise,
+    ]);
 
     if (completion instanceof ReadableStream) {
-        throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, 'Expected a non-streaming response');
+        throw new Error('Expected a non-streaming response');
     }
 
     const responseText = completion.choices[0].message.content?.toString() || '';
@@ -81,14 +88,23 @@ async function askAIModel(sellerDetails: string): Promise<ParsedListing> {
 }
 
 export async function beautifySellerDetails(sellerDetails: string): Promise<ParsedListing> {
+    for (const model of env.aiModelProviders) {
+        const result = await tryProviderWithRetries(model, sellerDetails);
+        if (result !== null) {
+            return result;
+        }
+    }
+    throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, 'All providers exhausted');
+}
 
+async function tryProviderWithRetries(model: string, sellerDetails: string): Promise<ParsedListing | null> {
     for (let i = 0; i < env.maxRetries; i++) {
         try {
-            const result = await askAIModel(sellerDetails);
+            const result = await askAIModel(model, sellerDetails);
             if (titleContainsMinWords(result.title, sellerDetails)) {
                 return result;
             }
         } catch (e) {}
     }
-    throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, 'Max retries exceeded');
+    return null;
 }

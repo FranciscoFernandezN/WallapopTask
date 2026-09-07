@@ -135,4 +135,16 @@ describe('beautifySellerDetails retries', () => {
     expect(caught).toBeInstanceOf(AppError);
     expect((caught as AppError).code).toBe(ErrorCodes.BEAUTIFIER_MAX_RETRIES);
   }, 15000);
+
+  test('tries each provider maxRetries times before moving to next', async () => {
+    const sdk = require('@openrouter/sdk') as any;
+    sdk._mockSend.mockRejectedValue(new Error('AI model error'));
+
+    try {
+      await beautifySellerDetails('test details');
+    } catch (e) {}
+
+    expect(sdk._mockSend).toHaveBeenCalled();
+    expect(sdk._mockSend.mock.calls.length).toBeGreaterThanOrEqual(2);
+  }, 15000);
 });

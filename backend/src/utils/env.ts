@@ -15,7 +15,7 @@ export const env = {
   aiModelProviderBaseUrl: requireEnv('AI_MODEL_PROVIDER_BASE_URL'),
   aiModelProviderApiKey: requireEnv('AI_MODEL_PROVIDER_API_KEY'),
   aiModelTimeout: Number.parseInt(requireEnv('AI_MODEL_TIMEOUT'), 10),
-  aiModelProvider: requireEnv('AI_MODEL_PROVIDER'),
+  aiModelProviders: requireEnv('AI_MODEL_PROVIDER').split(',').map(p => p.trim()),
   maxRetries: Number.parseInt(requireEnv('AI_MAX_RETRIES'), 10),
 } as const;
 
