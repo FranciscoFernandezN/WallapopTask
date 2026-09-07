@@ -2,6 +2,7 @@ import { env, loadPromptText } from '../utils/env.ts';
 import { OpenRouter } from '@openrouter/sdk';
 import { AppError } from '../utils/errors.ts';
 import { ErrorCodes } from '../../../shared/errors/codes.ts';
+import { getMockResponse, isMockProvider } from '../mocks/mockProvider.ts';
 
 const MIN_WORDS_IN_TITLE = 2;
 
@@ -18,22 +19,22 @@ export interface ParsedListing {
 
 export function parseListingResponse(response: string): ParsedListing {
     const lines = response.trim().split('\n').map(line => line.trim()).filter(line => line.length > 0);
-    
+
     if (lines.length < 3) {
         throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, 'Invalid response format: expected at least 3 lines');
     }
-    
+
     const title = lines[0];
     const tags = lines[1].split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     const priceMatch = lines[2].match(/^(\d+)-(\d+)$/);
-    
+
     if (!priceMatch) {
         throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, `Invalid price range format: ${lines[2]}`);
     }
-    
+
     const minPrice = Number.parseInt(priceMatch[1], 10);
     const maxPrice = Number.parseInt(priceMatch[2], 10);
-    
+
     return {
         title,
         tags,
@@ -44,22 +45,27 @@ export function parseListingResponse(response: string): ParsedListing {
 export function titleContainsMinWords(title: string, originalDetails: string, minWords: number = MIN_WORDS_IN_TITLE): boolean {
     const originalWords = new Set(originalDetails.toLowerCase().split(' ').map(word => word.trim()).filter(word => word.length > 0));
     const titleWords = title.toLowerCase().split(' ').map(word => word.trim()).filter(word => word.length > 0);
-    
+
     let matchCount = 0;
     for (const word of titleWords) {
         if (originalWords.has(word)) {
             matchCount++;
         }
     }
-    
+
     return matchCount >= minWords;
 }
 
 async function askAIModel(model: string, sellerDetails: string): Promise<ParsedListing> {
+    if (isMockProvider(model)) {
+        const mockResponse = getMockResponse(sellerDetails);
+        return parseListingResponse(mockResponse);
+    }
+
     const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => reject(new Error(`AI model timeout after ${env.aiModelTimeout}ms`)), env.aiModelTimeout);
     });
-    
+
     const completion = await Promise.race([
         openrouter.chat.send({
             chatRequest: {
@@ -104,7 +110,7 @@ async function tryProviderWithRetries(model: string, sellerDetails: string): Pro
             if (titleContainsMinWords(result.title, sellerDetails)) {
                 return result;
             }
-        } catch (e) {}
+        } catch (e) { }
     }
     return null;
 }
