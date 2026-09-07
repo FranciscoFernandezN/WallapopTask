@@ -22,5 +22,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "../../shared", "tests/App.test.tsx"]
+  "include": ["src", "../../shared", "tests/BeautifyScreen.test.tsx"]
 }
