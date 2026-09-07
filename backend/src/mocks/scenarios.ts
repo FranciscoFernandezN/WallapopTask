@@ -1,9 +1,23 @@
+/**
+ * A single mock scenario that maps a keyword in the user input
+ * to a valid and an invalid AI response.
+ *
+ * @property keyword - Substring to match against the seller's input (case-insensitive).
+ * @property validResponse - A correctly formatted 3-line response that passes all validations.
+ * @property invalidResponse - A malformed response that will fail parsing or word-count checks.
+ */
 export interface MockScenario {
     keyword: string;
     validResponse: string;
     invalidResponse: string;
 }
 
+/**
+ * All mock scenarios, one per product category from the integration test suite.
+ *
+ * Each scenario provides a keyword that triggers it, a valid 3-line response,
+ * and an invalid response used to exercise the retry logic (20% of the time).
+ */
 export const mockScenarios: MockScenario[] = [
     {
         keyword: 'leather jacket',

@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import './Header.css';
 
+/**
+ * Sticky header displaying the Wallapop logo and the project title.
+ */
 export function Header() {
   const { t } = useTranslation();
 

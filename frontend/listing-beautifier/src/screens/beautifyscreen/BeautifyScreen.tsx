@@ -7,6 +7,13 @@ import { LoadingOverlay } from '../../components/loadingoverlay/LoadingOverlay.t
 import { ErrorPopup } from '../../components/errorpopup/ErrorPopup.tsx';
 import './BeautifyScreen.css';
 
+/**
+ * Main screen for the listing beautifier.
+ *
+ * Renders a text input for the seller's product description, a submit button,
+ * contextual hints about missing information, a loading overlay during API calls,
+ * and a result card displaying the beautified listing on success.
+ */
 export function BeautifyScreen() {
   const { t } = useTranslation();
   const [sellerDetails, setSellerDetails] = useState('');
@@ -14,6 +21,13 @@ export function BeautifyScreen() {
   const [result, setResult] = useState<BeautifySellerDetailsResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  /**
+   * Analyses the input text and returns a list of hint messages
+   * about missing or insufficient product information.
+   *
+   * @param text - Current value of the seller details input.
+   * @returns Array of localized hint strings.
+   */
   const getMissingInfoHints = (text: string): string[] => {
     const hints: string[] = [];
     const trimmed = text.trim();
@@ -38,6 +52,7 @@ export function BeautifyScreen() {
     return hints;
   };
 
+  /** Submits the seller details to the backend and handles the response or error. */
   const handleSubmit = async () => {
     if (!sellerDetails.trim()) return;
 

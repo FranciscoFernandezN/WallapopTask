@@ -6,6 +6,12 @@ import './LoadingOverlay.css';
 const SPINNER_KEYS = ['loading.spinner1', 'loading.spinner2', 'loading.spinner3'];
 const SPINNER_COMPONENTS = [Blocks, Comment, Radio];
 
+/**
+ * Full-screen loading overlay with backdrop blur.
+ *
+ * Displays a rotating spinner (changes every 2 seconds) and
+ * a localized loading message that matches the current spinner.
+ */
 export function LoadingOverlay() {
   const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(() => Math.floor(Math.random() * 3));
