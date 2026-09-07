@@ -1,6 +1,9 @@
 {
   "errors": {
-    "deprecation": "This app should be updated or it will stop working by {deprecation_date}"
+    "deprecation": "This app should be updated or it will stop working by {deprecation_date}",
+    "beautifier": "Something went wrong when trying to understand the robot",
+    "internal": "Something went wrong, please try again later",
+    "close": "Close"
   },
   "header": {
     "logoAlt": "Wallapop Logo",

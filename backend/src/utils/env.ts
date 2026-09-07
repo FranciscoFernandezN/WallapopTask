@@ -16,6 +16,7 @@ export const env = {
   aiModelProviderApiKey: requireEnv('AI_MODEL_PROVIDER_API_KEY'),
   aiModelTimeout: Number.parseInt(requireEnv('AI_MODEL_TIMEOUT'), 10),
   aiModelProvider: requireEnv('AI_MODEL_PROVIDER'),
+  maxRetries: Number.parseInt(requireEnv('AI_MAX_RETRIES'), 10),
 } as const;
 
 export function loadPromptText(): string {

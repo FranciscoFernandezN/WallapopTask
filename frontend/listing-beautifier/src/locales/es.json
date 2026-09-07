@@ -1,6 +1,9 @@
 {
   "errors": {
-    "deprecation": "Esta aplicación debe actualizarse o dejará de funcionar el {deprecation_date}"
+    "deprecation": "Esta aplicación debe actualizarse o dejará de funcionar el {deprecation_date}",
+    "beautifier": "Algo salió mal al intentar entender al robot",
+    "internal": "Algo salió mal, por favor inténtalo de nuevo más tarde",
+    "close": "Cerrar"
   },
   "header": {
     "logoAlt": "Logo de Wallapop",

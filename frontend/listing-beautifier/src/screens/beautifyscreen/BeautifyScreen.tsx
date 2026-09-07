@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { sendBeautifySellerDetails } from '../../utils/api.ts';
+import { BackendError } from '../../utils/errors.ts';
 import type { BeautifySellerDetailsResponse } from '../../../../../shared/types/beautify.ts';
 import { LoadingOverlay } from '../../components/loadingoverlay/LoadingOverlay.tsx';
+import { ErrorPopup } from '../../components/errorpopup/ErrorPopup.tsx';
 import './BeautifyScreen.css';
 
 export function BeautifyScreen() {
@@ -10,6 +12,7 @@ export function BeautifyScreen() {
   const [sellerDetails, setSellerDetails] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BeautifySellerDetailsResponse | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const getMissingInfoHints = (text: string): string[] => {
     const hints: string[] = [];
@@ -43,7 +46,11 @@ export function BeautifyScreen() {
       const response = await sendBeautifySellerDetails({ sellerDetails });
       setResult(response);
     } catch (error) {
-      console.error(error);
+      if (error instanceof BackendError) {
+        setErrorMessage(error.message);
+      } else {
+        console.error(error);
+      }
     } finally {
       setLoading(false);
     }
@@ -52,6 +59,7 @@ export function BeautifyScreen() {
   return (
     <div className="beautify-screen">
       {loading && <LoadingOverlay />}
+      {errorMessage && <ErrorPopup message={errorMessage} onClose={() => setErrorMessage(null)} />}
       <div className="container">
         <h1 className="title">{t('beautify.title')}</h1>
         

@@ -1,5 +1,5 @@
 import { env, getBackendUrl } from './env.ts';
-import { DeprecationError } from './errors.ts';
+import { DeprecationError, mapErrorCode } from './errors.ts';
 import type { BeautifySellerDetailsRequest, BeautifySellerDetailsResponse } from '../../../../shared/types/beautify.ts';
 
 async function request<T>(path: string, options: RequestInit & { signal?: AbortSignal }): Promise<T> {
@@ -22,6 +22,10 @@ async function request<T>(path: string, options: RequestInit & { signal?: AbortS
     }
 
     if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      if (body?.code) {
+        throw mapErrorCode(body.code);
+      }
       throw new Error(`Request failed with status ${response.status}`);
     }
 
