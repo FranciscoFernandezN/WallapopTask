@@ -80,6 +80,13 @@ describe('titleContainsMinWords', () => {
     expect(titleContainsMinWords(title, original, 2)).toBe(true);
   });
 
+  test('ignores punctuation when matching words', () => {
+    const title = 'Vintage, Leather!';
+    const original = 'vintage leather jacket';
+
+    expect(titleContainsMinWords(title, original, 2)).toBe(true);
+  });
+
   test('uses default minWords of 2 when not specified', () => {
     const title = 'Vintage Leather Something';
     const original = 'Vintage leather jacket';

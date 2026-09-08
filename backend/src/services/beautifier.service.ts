@@ -68,9 +68,10 @@ export function parseListingResponse(response: string): ParsedListing {
  * @returns `true` if the title contains at least `minWords` words from the original input.
  */
 export function titleContainsMinWords(title: string, originalDetails: string, minWords: number = MIN_WORDS_IN_TITLE): boolean {
-    const originalWords = new Set(originalDetails.toLowerCase().split(' ').map(word => word.trim()));
+    const removePunctuation = (text: string): string => text.toLowerCase().replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ");
+    const originalWords = new Set(removePunctuation(originalDetails).split(' ').filter(Boolean));
 
-    const matchCount = title.toLowerCase().split(' ').filter(word => originalWords.has(word)).length;
+    const matchCount = removePunctuation(title).split(' ').filter(word => originalWords.has(word)).length;
 
     return matchCount >= minWords;
 }
@@ -183,6 +184,7 @@ async function tryProviderWithRetries(model: string, sellerDetails: string): Pro
             }
         } catch (e) {
             if (e instanceof AppError && e.code === ErrorCodes.BEAUTIFIER_RATE_LIMITED) {
+                console.log(`Provider ${model} rate limited, skipping to next provider.`);
                 return null;
             }
         }

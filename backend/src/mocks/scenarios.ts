@@ -81,7 +81,7 @@ export const mockScenarios: MockScenario[] = [
     },
     {
         keyword: 'yoga',
-        validResponse: 'Manduka PRO Yoga Mat 6mm Black\nmanduka, yoga-mat, 6mm, black, non-slip\n70-100',
+        validResponse: 'Manduka PRO Yoga Mat 6mm Black\nmanduka, yoga-mat, sports, black, home-fitness\n70-100',
         invalidResponse: 'Exercise Mat\nyoga, fitness\n60',
     },
     {
