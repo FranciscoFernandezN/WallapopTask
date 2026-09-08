@@ -68,15 +68,9 @@ export function parseListingResponse(response: string): ParsedListing {
  * @returns `true` if the title contains at least `minWords` words from the original input.
  */
 export function titleContainsMinWords(title: string, originalDetails: string, minWords: number = MIN_WORDS_IN_TITLE): boolean {
-    const originalWords = new Set(originalDetails.toLowerCase().split(' ').map(word => word.trim()).filter(word => word.length > 0));
-    const titleWords = title.toLowerCase().split(' ').map(word => word.trim()).filter(word => word.length > 0);
+    const originalWords = new Set(originalDetails.toLowerCase().split(' ').map(word => word.trim()));
 
-    let matchCount = 0;
-    for (const word of titleWords) {
-        if (originalWords.has(word)) {
-            matchCount++;
-        }
-    }
+    const matchCount = title.toLowerCase().split(' ').filter(word => originalWords.has(word)).length;
 
     return matchCount >= minWords;
 }
