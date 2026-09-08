@@ -95,8 +95,9 @@ async function askAIModel(model: string, sellerDetails: string): Promise<ParsedL
         return parseListingResponse(mockResponse);
     }
 
+    let timeoutId: NodeJS.Timeout;
     const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error(`AI model timeout after ${env.aiModelTimeout}ms`)), env.aiModelTimeout);
+        timeoutId = setTimeout(() => reject(new Error(`AI model timeout after ${env.aiModelTimeout}ms`)), env.aiModelTimeout);
     });
 
     const openrouter = new OpenRouter({
@@ -139,6 +140,8 @@ async function askAIModel(model: string, sellerDetails: string): Promise<ParsedL
         }
         
         throw error;
+    } finally {
+        clearTimeout(timeoutId!);
     }
 }
 
