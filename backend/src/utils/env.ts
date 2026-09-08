@@ -27,8 +27,6 @@ export const env = {
   frontendPort: Number.parseInt(requireEnv('FRONTEND_PORT'), 10),
   /** Hostname of the frontend (used for CORS origin). */
   frontendHost: requireEnv('FRONTEND_HOST'),
-  /** Base URL for the AI model provider API (e.g. OpenRouter). */
-  aiModelProviderBaseUrl: requireEnv('AI_MODEL_PROVIDER_BASE_URL'),
   /** API key for authenticating with the AI model provider. */
   aiModelProviderApiKey: requireEnv('AI_MODEL_PROVIDER_API_KEY'),
   /** Maximum time in milliseconds to wait for a single AI model response. */
