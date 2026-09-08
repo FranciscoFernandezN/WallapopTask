@@ -18,7 +18,7 @@ describe('parseListingResponse', () => {
     expect(() => parseListingResponse(invalidPriceResponse)).toThrow('Invalid price range format');
   });
 
-  test('throws AppError with BEAUTIFIER_MAX_RETRIES code', () => {
+  test('throws AppError with BEAUTIFIER_MALFORMED_RESPONSE code', () => {
     const invalidResponse = 'Only title';
 
     expect(() => parseListingResponse(invalidResponse)).toThrow(AppError);
@@ -26,7 +26,7 @@ describe('parseListingResponse', () => {
     try {
       parseListingResponse(invalidResponse);
     } catch (error) {
-      expect((error as AppError).code).toBe(ErrorCodes.BEAUTIFIER_MAX_RETRIES);
+      expect((error as AppError).code).toBe(ErrorCodes.BEAUTIFIER_MALFORMED_RESPONSE);
     }
   });
 

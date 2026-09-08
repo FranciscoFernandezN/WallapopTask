@@ -75,7 +75,8 @@ The backend supports multiple AI model providers with automatic fallback.
    - The response doesn't follow the expected 3-line format.
    - The title doesn't contain at least `MIN_WORDS_IN_TITLE` words from the original input.
 6. If all retries for a provider fail, it moves to the next provider.
-7. If all providers are exhausted, throws `AppError` with `BEAUTIFIER_MAX_RETRIES` code.
+7. If any provider fails to provide a valid response, throws `AppError` with `BEAUTIFIER_MALFORMED_RESPONSE` code.
+8. If all providers are exhausted, throws `AppError` with `BEAUTIFIER_MAX_RETRIES` code.
 
 ### Mock provider
 

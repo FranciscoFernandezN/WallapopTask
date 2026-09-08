@@ -5,6 +5,8 @@
  * Frontend maps these codes to localized error classes via `mapErrorCode()`.
  */
 export const ErrorCodes = {
+  /** AI provider failed to produce a valid response. */
+  BEAUTIFIER_MALFORMED_RESPONSE: 'BEAUTIFIER_MALFORMED_RESPONSE',
   /** All AI providers exhausted their retries without producing a valid response. */
   BEAUTIFIER_MAX_RETRIES: 'BEAUTIFIER_MAX_RETRIES',
   /** An unexpected internal error that is not a known business error. */

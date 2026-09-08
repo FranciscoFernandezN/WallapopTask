@@ -36,7 +36,7 @@ export function parseListingResponse(response: string): ParsedListing {
     const lines = response.trim().split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
     if (lines.length < 3) {
-        throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, 'Invalid response format: expected at least 3 lines');
+        throw new AppError(ErrorCodes.BEAUTIFIER_MALFORMED_RESPONSE, 'Invalid response format: expected at least 3 lines');
     }
 
     const title = lines[0];
@@ -44,7 +44,7 @@ export function parseListingResponse(response: string): ParsedListing {
     const priceMatch = lines[2].match(/^(\d+)-(\d+)$/);
 
     if (!priceMatch) {
-        throw new AppError(ErrorCodes.BEAUTIFIER_MAX_RETRIES, `Invalid price range format: ${lines[2]}`);
+        throw new AppError(ErrorCodes.BEAUTIFIER_MALFORMED_RESPONSE, `Invalid price range format: ${lines[2]}`);
     }
 
     const minPrice = Number.parseInt(priceMatch[1], 10);
