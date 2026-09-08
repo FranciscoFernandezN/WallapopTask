@@ -84,6 +84,7 @@ export function titleContainsMinWords(title: string, originalDetails: string, mi
  * @param model - AI model identifier (e.g. `openai/gpt-4o`) or `MOCK`.
  * @param sellerDetails - Raw product description to beautify.
  * @returns Parsed listing from the AI response.
+ * @throws {AppError} With `BEAUTIFIER_RATE_LIMITED` code when the provider returns 429.
  * @throws {Error} When the response is a stream or the timeout is exceeded.
  * @throws {AppError} When the response format is invalid.
  */
@@ -102,31 +103,46 @@ async function askAIModel(model: string, sellerDetails: string): Promise<ParsedL
         appTitle: 'Listing beautifier'
     });
 
-    const completion = await Promise.race([
-        openrouter.chat.send({
-            chatRequest: {
-                model: model,
-                messages: [
-                    {
-                        role: 'system',
-                        content: loadPromptText(),
-                    },
-                    {
-                        role: 'user',
-                        content: sellerDetails,
-                    },
-                ],
-            },
-        }),
-        timeoutPromise,
-    ]);
+    try {
+        const completion = await Promise.race([
+            openrouter.chat.send({
+                chatRequest: {
+                    model: model,
+                    messages: [
+                        {
+                            role: 'system',
+                            content: loadPromptText(),
+                        },
+                        {
+                            role: 'user',
+                            content: sellerDetails,
+                        },
+                    ],
+                },
+            }),
+            timeoutPromise,
+        ]);
 
-    if (completion instanceof ReadableStream) {
-        throw new Error('Expected a non-streaming response');
+        if (completion instanceof ReadableStream) {
+            throw new Error('Expected a non-streaming response');
+        }
+
+        const responseText = completion.choices[0].message.content?.toString() || '';
+        return parseListingResponse(responseText);
+    } catch (error) {
+        if (error instanceof AppError && error.code === ErrorCodes.BEAUTIFIER_RATE_LIMITED) {
+            throw error;
+        }
+        
+        const errorObj = error as { status?: number; statusCode?: number; code?: number };
+        const status = errorObj?.status || errorObj?.statusCode || errorObj?.code;
+        
+        if (status === 429) {
+            throw new AppError(ErrorCodes.BEAUTIFIER_RATE_LIMITED, 'Rate limit exceeded (429)');
+        }
+        
+        throw error;
     }
-
-    const responseText = completion.choices[0].message.content?.toString() || '';
-    return parseListingResponse(responseText);
 }
 
 /**
@@ -156,7 +172,7 @@ export async function beautifySellerDetails(sellerDetails: string): Promise<Pars
  *
  * @param model - AI model identifier to query.
  * @param sellerDetails - Raw product description to beautify.
- * @returns A valid `ParsedListing` on success, or `null` if all retries fail.
+ * @returns A valid `ParsedListing` on success, or `null` if all retries fail or rate limited.
  */
 async function tryProviderWithRetries(model: string, sellerDetails: string): Promise<ParsedListing | null> {
     for (let i = 0; i < env.maxRetries; i++) {
@@ -165,7 +181,11 @@ async function tryProviderWithRetries(model: string, sellerDetails: string): Pro
             if (titleContainsMinWords(result.title, sellerDetails)) {
                 return result;
             }
-        } catch (e) { }
+        } catch (e) {
+            if (e instanceof AppError && e.code === ErrorCodes.BEAUTIFIER_RATE_LIMITED) {
+                return null;
+            }
+        }
     }
     return null;
 }
