@@ -7,7 +7,6 @@ export default defineConfig({
     __ENV_BACKEND_PORT__: JSON.stringify('3000'),
     __ENV_BACKEND_HOST__: JSON.stringify('localhost'),
     __ENV_BACKEND_TIMEOUT__: JSON.stringify('30000'),
-    __ENV_FRONTEND_PORT__: JSON.stringify('5173'),
   },
   test: {
     globals: true,

@@ -25,8 +25,6 @@ export const env = {
   backendPort: Number.parseInt(requireEnv(__ENV_BACKEND_PORT__, 'BACKEND_PORT'), 10),
   /** Timeout in milliseconds for backend API requests. */
   backendTimeout: Number.parseInt(requireEnv(__ENV_BACKEND_TIMEOUT__, 'BACKEND_TIMEOUT'), 10),
-  /** Port the frontend dev server runs on. */
-  frontendPort: Number.parseInt(requireEnv(__ENV_FRONTEND_PORT__, 'FRONTEND_PORT'), 10),
 } as const;
 
 /**

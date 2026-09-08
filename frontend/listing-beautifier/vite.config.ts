@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
       __ENV_BACKEND_PORT__: JSON.stringify(env.BACKEND_PORT),
       __ENV_BACKEND_HOST__: JSON.stringify(env.BACKEND_HOST),
       __ENV_BACKEND_TIMEOUT__: JSON.stringify(env.BACKEND_TIMEOUT),
-      __ENV_FRONTEND_PORT__: JSON.stringify(env.FRONTEND_PORT),
     },
   });
 });
