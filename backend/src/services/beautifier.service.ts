@@ -131,10 +131,6 @@ async function askAIModel(model: string, sellerDetails: string): Promise<ParsedL
         const responseText = completion.choices[0].message.content?.toString() || '';
         return parseListingResponse(responseText);
     } catch (error) {
-        if (error instanceof AppError && error.code === ErrorCodes.BEAUTIFIER_RATE_LIMITED) {
-            throw error;
-        }
-        
         const errorObj = error as { status?: number; statusCode?: number; code?: number };
         const status = errorObj?.status || errorObj?.statusCode || errorObj?.code;
         
@@ -184,7 +180,6 @@ async function tryProviderWithRetries(model: string, sellerDetails: string): Pro
             }
         } catch (e) {
             if (e instanceof AppError && e.code === ErrorCodes.BEAUTIFIER_RATE_LIMITED) {
-                console.log(`Provider ${model} rate limited, skipping to next provider.`);
                 return null;
             }
         }
