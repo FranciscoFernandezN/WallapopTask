@@ -33,10 +33,11 @@ cp .env.example .env
 
 # Edit .env and add your OpenRouter API key with its available models:
 # AI_MODEL_PROVIDER=model1,model2,model3
-# AI_MODEL_PROVIDER_API_KEY=your-key-here
+# AI_MODEL_PROVIDER_API_KEY=YOUR_OPENROUTER_API_KEY
 
 # Or use the mocked version instead:
 # AI_MODEL_PROVIDER=MOCK
+# AI_MODEL_PROVIDER_API_KEY=MOCK
 ```
 
 See [OpenRouter Models](https://openrouter.ai/models) for available models and their capabilities.
