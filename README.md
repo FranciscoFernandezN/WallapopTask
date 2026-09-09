@@ -33,10 +33,11 @@ cp .env.example .env
 
 # Edit .env and add your OpenRouter API key with its available models:
 # AI_MODEL_PROVIDER=model1,model2,model3
-# AI_MODEL_PROVIDER_API_KEY=your-key-here
+# AI_MODEL_PROVIDER_API_KEY=YOUR_OPENROUTER_API_KEY
 
 # Or use the mocked version instead:
 # AI_MODEL_PROVIDER=MOCK
+# AI_MODEL_PROVIDER_API_KEY=MOCK
 ```
 
 See [OpenRouter Models](https://openrouter.ai/models) for available models and their capabilities.
@@ -85,7 +86,7 @@ npm test
 | `beautifier.test.ts` | Integration tests with 15 real product scenarios |
 | `mockProvider.test.ts` | Tests for the mock provider behavior |
 
-Tests the most critical parts of the backend using Jest and Babel as the test runner and transpiler.
+Tests the most critical parts of the backend using Jest and Babel as the test runner and transpiler. I found them useful for checking that the backend works as expected, not only with unit tests, checking the retry, fallback and parsing behavior, but also with integration tests, allowing to check the performance of the AI models and the prompt.
 
 ### Frontend Tests
 
@@ -94,7 +95,7 @@ cd frontend/listing-beautifier
 npm test
 ```
 
-Tests the UI components and user flows using Vitest.
+Tests the UI components and user flows using Vitest. I found them useful for checking that the frontend works as expected as it only has one screen and it should be up and running.
 
 ## Examples
 
